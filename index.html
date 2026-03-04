@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐜 Find An Anteater</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐜</text></svg>">
+    <title>Find An Anteater</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.8em%22 font-size=%2280%22>A</text></svg>">
     
     <style>
         * {
@@ -14,113 +14,139 @@
         }
 
         :root {
-            --parchment: #f5ebe0;
-            --forest-green: #3d5a3d;
-            --warm-brown: #6b4423;
-            --text-dark: #4a3728;
-            --ant-red: #cc2200;
-            --ant-black: #1a1a1a;
-            --water: #a8c5b5;
+            --bg-main: #0a0a0a;
+            --panel-bg: #141414;
+            --panel-elevated: #1e1e1e;
+            --border-subtle: #2f2f2f;
+            --accent: #ffffff;
+            --accent-soft: #d9d9d9;
+            --text-primary: #f2f2f2;
+            --text-muted: #a8a8a8;
+            --ant-red: #bdbdbd;
+            --ant-black: #0f0f0f;
         }
 
         body {
-            font-family: Georgia, 'Times New Roman', serif;
-            background-color: var(--parchment);
-            color: var(--text-dark);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
             overflow: hidden;
             height: 100vh;
         }
 
         #app-container {
-            display: flex;
-            flex-direction: column;
+            position: relative;
             height: 100vh;
         }
 
-        /* Header & Search */
+        /* Floating search controls */
         #header {
-            background-color: var(--parchment);
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(700px, calc(100% - 24px));
             z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         h1 {
-            font-size: 2rem;
-            color: var(--warm-brown);
-            margin-bottom: 15px;
+            display: none;
+            font-size: 1.4rem;
+            letter-spacing: 0.02em;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 12px;
             text-align: center;
         }
 
         .search-container {
-            max-width: 600px;
-            margin: 0 auto;
+            max-width: 700px;
+            margin: 0;
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
+            padding: 0;
         }
 
         #search-input {
             flex: 1;
-            padding: 12px 18px;
-            border: 2px solid var(--forest-green);
-            border-radius: 25px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
             font-size: 1rem;
-            font-family: Georgia, serif;
-            background-color: #fff;
+            font-family: inherit;
+            background-color: var(--panel-bg);
+            color: var(--text-primary);
         }
 
         #search-button {
-            padding: 12px 30px;
-            background-color: var(--forest-green);
+            padding: 10px 18px;
+            background-color: var(--panel-elevated);
             color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            font-size: 0.95rem;
             cursor: pointer;
-            font-family: Georgia, serif;
-            font-weight: bold;
+            font-family: inherit;
+            font-weight: 600;
             transition: background-color 0.3s;
         }
 
         #search-button:hover {
-            background-color: var(--warm-brown);
+            background-color: #282828;
         }
 
         .filter-buttons {
             display: flex;
             justify-content: center;
             gap: 10px;
+            padding: 0;
         }
 
         .filter-btn {
-            padding: 8px 20px;
-            border: 2px solid var(--forest-green);
-            background-color: white;
-            color: var(--forest-green);
-            border-radius: 20px;
+            padding: 6px 16px;
+            border: 1px solid var(--border-subtle);
+            background-color: transparent;
+            color: var(--text-muted);
+            border-radius: 8px;
             cursor: pointer;
-            font-family: Georgia, serif;
+            font-family: inherit;
+            font-size: 0.85rem;
             transition: all 0.3s;
         }
 
         .filter-btn.active {
-            background-color: var(--forest-green);
-            color: white;
+            background-color: var(--panel-elevated);
+            color: var(--accent);
+            border-color: transparent;
+        }
+
+        .filter-btn[data-filter="encounters"] {
+            color: #cc2200;
+            border-color: #cc2200;
+        }
+
+        .filter-btn[data-filter="encounters"].active {
+            background-color: #cc2200;
+            color: #ffffff;
+            border-color: #cc2200;
         }
 
         .error-message {
             text-align: center;
             color: var(--ant-red);
-            margin-top: 10px;
-            font-style: italic;
+            margin-top: 0;
+            font-size: 0.85rem;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.55);
         }
 
         /* Main Content */
         #main-content {
-            flex: 1;
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         #map {
@@ -135,77 +161,95 @@
             top: 20px;
             width: 320px;
             max-height: calc(100% - 40px);
-            background-color: rgba(245, 235, 224, 0.95);
-            border: 2px solid var(--forest-green);
+            background-color: rgba(16, 16, 16, 0.92);
+            border: 1px solid var(--border-subtle);
             border-radius: 12px;
             padding: 20px;
-            padding-top: 50px;
             overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-gutter: stable;
             transform: translateX(-400px);
             transition: transform 0.3s ease;
             z-index: 100;
+        }
+
+        #results-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #results-panel::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 8px 2px 8px 0;
+            border-radius: 10px;
+        }
+
+        #results-panel::-webkit-scrollbar-thumb {
+            background: #3a3a3a;
+            border-radius: 10px;
         }
 
         #results-panel.visible {
             transform: translateX(0);
         }
 
-        #results-panel .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .results-title {
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 1.2rem;
         }
 
         .result-item {
             padding: 15px;
             margin-bottom: 10px;
-            background-color: white;
-            border-radius: 8px;
+            background-color: rgba(22, 22, 22, 0.96);
+            border-radius: 12px;
             cursor: pointer;
-            border: 2px solid transparent;
+            border: 1px solid #3a3a3a;
             transition: all 0.2s;
         }
 
         .result-item:hover {
-            border-color: var(--forest-green);
-            transform: translateX(5px);
+            border-color: #f2f2f2;
+            background-color: #1a1a1a;
         }
 
         .result-name {
             font-weight: bold;
-            color: var(--warm-brown);
+            color: var(--accent);
             font-size: 1.1rem;
             margin-bottom: 5px;
         }
 
         .result-distance {
-            color: var(--forest-green);
+            color: var(--text-muted);
             font-size: 0.9rem;
             margin-bottom: 5px;
         }
 
         .result-location {
             font-size: 0.85rem;
-            color: var(--text-dark);
+            color: var(--text-muted);
         }
 
         .encounter-badge {
             display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
+            padding: 0;
             font-size: 0.75rem;
             margin-top: 5px;
             font-weight: bold;
         }
 
         .encounter-badge.available {
-            background-color: #ffe0e0;
-            color: var(--ant-red);
-        }
-
-        .encounter-badge.viewing {
-            background-color: #e0e0e0;
-            color: #666;
+            background-color: transparent;
+            color: #ff5a5a;
         }
 
         /* Info Panel */
@@ -215,8 +259,8 @@
             top: 0;
             width: 400px;
             height: 100%;
-            background-color: var(--parchment);
-            border-left: 3px solid var(--forest-green);
+            background-color: transparent;
+            border-left: none;
             padding: 30px;
             overflow-y: auto;
             transform: translateX(100%);
@@ -228,16 +272,33 @@
             transform: translateX(0);
         }
 
+        #info-content {
+            background-color: rgba(22, 22, 22, 0.96);
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        #info-content.encounter-card {
+            background-color: #7e1500;
+        }
+
+        #info-panel .close-btn {
+            top: 38px;
+            right: 38px;
+            border-radius: 8px;
+        }
+
         .close-btn {
             position: absolute;
             top: 15px;
             right: 15px;
             width: 30px;
             height: 30px;
-            background-color: var(--warm-brown);
+            background-color: #232323;
             color: white;
-            border: none;
-            border-radius: 50%;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1.2rem;
             line-height: 1;
@@ -245,7 +306,7 @@
 
         .info-title {
             font-size: 1.5rem;
-            color: var(--warm-brown);
+            color: var(--accent);
             margin-bottom: 10px;
         }
 
@@ -255,12 +316,13 @@
 
         .info-label {
             font-weight: bold;
-            color: var(--forest-green);
+            color: var(--text-muted);
             margin-bottom: 5px;
         }
 
         .info-value {
             margin-bottom: 10px;
+            color: var(--text-primary);
         }
 
         .species-list {
@@ -268,45 +330,22 @@
             padding-left: 0;
         }
 
-        .species-list li:before {
-            content: "🐜 ";
-        }
 
         .directions-btn {
             display: inline-block;
             padding: 12px 25px;
-            background-color: var(--forest-green);
+            background-color: var(--panel-elevated);
             color: white;
             text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            font-weight: 600;
             margin-top: 10px;
             transition: background-color 0.3s;
         }
 
         .directions-btn:hover {
-            background-color: var(--warm-brown);
-        }
-
-        /* Anteater Character */
-        /* PLACEHOLDER: Replace with illustrated asset */
-        .anteater-asset {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 120px;
-            height: 80px;
-            z-index: 500;
-            pointer-events: none;
-        }
-
-        #anteater-svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        #anteater-tongue {
-            transition: d 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #282828;
         }
 
         /* Pulse Animation for Selected Marker */
@@ -324,11 +363,12 @@
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
 
             #header {
-                padding: 15px;
+                width: calc(100% - 16px);
+                top: 8px;
             }
 
             .search-container {
@@ -355,7 +395,7 @@
                 top: auto;
                 bottom: 0;
                 border-left: none;
-                border-top: 3px solid var(--forest-green);
+                border-top: 1px solid var(--border-subtle);
                 transform: translateY(100%);
             }
 
@@ -363,12 +403,6 @@
                 transform: translateY(0);
             }
 
-            .anteater-asset {
-                width: 80px;
-                height: 55px;
-                bottom: 20px;
-                right: 20px;
-            }
         }
 
         /* Custom scrollbar */
@@ -377,11 +411,11 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--parchment);
+            background: #111111;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--forest-green);
+            background: #333333;
             border-radius: 4px;
         }
     </style>
@@ -389,7 +423,7 @@
 <body>
     <div id="app-container">
         <header id="header">
-            <h1>🐜 Find An Anteater</h1>
+            <h1>Find An Anteater</h1>
             <div class="search-container">
                 <input 
                     type="text" 
@@ -411,8 +445,10 @@
 
             <!-- Results Sidebar -->
             <div id="results-panel">
-                <button class="close-btn" id="close-results">×</button>
-                <h3 style="margin-bottom: 15px; color: var(--warm-brown);">Nearby Locations</h3>
+                <div class="results-header">
+                    <h3 class="results-title">Nearby Locations</h3>
+                    <button class="close-btn" id="close-results">×</button>
+                </div>
                 <div id="results-list"></div>
             </div>
 
@@ -423,29 +459,6 @@
             </div>
         </div>
 
-        <!-- PLACEHOLDER: Anteater Character - Replace with illustrated asset -->
-        <div class="anteater-asset">
-            <svg id="anteater-svg" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
-                <!-- Simple placeholder anteater -->
-                <!-- Body -->
-                <ellipse cx="70" cy="50" rx="35" ry="20" fill="#8B7355"/>
-                <!-- Head -->
-                <ellipse cx="30" cy="45" rx="20" ry="15" fill="#8B7355"/>
-                <!-- Snout -->
-                <path d="M 10 45 Q 5 45 5 45" stroke="#6B4423" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <!-- Ear -->
-                <ellipse cx="38" cy="38" rx="8" ry="12" fill="#6B4423"/>
-                <!-- Legs -->
-                <rect x="50" y="65" width="6" height="12" fill="#6B4423" rx="2"/>
-                <rect x="65" y="65" width="6" height="12" fill="#6B4423" rx="2"/>
-                <rect x="80" y="65" width="6" height="12" fill="#6B4423" rx="2"/>
-                <rect x="95" y="65" width="6" height="12" fill="#6B4423" rx="2"/>
-                <!-- Tail -->
-                <path d="M 100 50 Q 110 45 115 40" stroke="#6B4423" stroke-width="8" fill="none" stroke-linecap="round"/>
-                <!-- Tongue (animated element) -->
-                <path id="anteater-tongue" d="M 5 45 L 5 45" stroke="#E8989C" stroke-width="2" fill="none" stroke-linecap="round"/>
-            </svg>
-        </div>
     </div>
 
     <!-- Load location data from external file -->
@@ -466,7 +479,7 @@
             // Create geocoder
             geocoder = new google.maps.Geocoder();
 
-            // Map styling - warm, naturalist field-map aesthetic
+            // Map styling - warm naturalist field-map aesthetic
             const mapStyles = [
                 { "elementType": "geometry", "stylers": [{ "color": "#f5ebe0" }] },
                 { "elementType": "labels.text.fill", "stylers": [{ "color": "#4a3728" }] },
@@ -567,7 +580,7 @@
             const errorDiv = document.getElementById('error-message');
 
             if (!searchInput) {
-                errorDiv.textContent = '🐜 Please enter a city or zip code';
+                errorDiv.textContent = 'Please enter a city or zip code';
                 return;
             }
 
@@ -584,7 +597,7 @@
                     // Calculate distances and show results
                     showNearbyResults();
                 } else {
-                    errorDiv.textContent = '🐜 Location not found. Please try again with a valid city or zip code.';
+                    errorDiv.textContent = 'Location not found. Please try again with a valid city or zip code.';
                 }
             });
         }
@@ -635,9 +648,7 @@
                     <div class="result-name">${location.name}</div>
                     <div class="result-distance">${location.distance.toFixed(1)} miles away</div>
                     <div class="result-location">${location.city}, ${location.state}</div>
-                    <span class="encounter-badge ${location.encounter ? 'available' : 'viewing'}">
-                        ${location.encounter ? '🐜 Encounter Available' : 'Viewing Only'}
-                    </span>
+                    ${location.encounter ? '<span class="encounter-badge available">Encounter Available</span>' : ''}
                 `;
                 
                 div.addEventListener('click', () => {
@@ -668,9 +679,6 @@
             // Show info panel
             showInfoPanel(marker.locationData);
 
-            // Animate anteater tongue
-            animateTongue(marker.getPosition());
-
             // Pan to marker
             map.panTo(marker.getPosition());
         }
@@ -679,6 +687,8 @@
         function showInfoPanel(location) {
             const infoPanel = document.getElementById('info-panel');
             const infoContent = document.getElementById('info-content');
+
+            infoContent.classList.toggle('encounter-card', Boolean(location.encounter));
 
             infoContent.innerHTML = `
                 <h2 class="info-title">${location.name}</h2>
@@ -693,13 +703,6 @@
                     <ul class="species-list">
                         ${location.species.map(s => `<li>${s}</li>`).join('')}
                     </ul>
-                </div>
-
-                <div class="info-section">
-                    <div class="info-label">Encounter Availability</div>
-                    <span class="encounter-badge ${location.encounter ? 'available' : 'viewing'}">
-                        ${location.encounter ? '🐜 Encounter Available' : 'Viewing Only'}
-                    </span>
                 </div>
 
                 ${location.notes ? `
@@ -736,62 +739,10 @@
                 selectedMarker.setIcon(createAntIcon(selectedMarker.locationData.encounter));
                 selectedMarker = null;
             }
-
-            // Reset tongue
-            resetTongue();
         }
 
         function closeResultsPanel() {
             document.getElementById('results-panel').classList.remove('visible');
-        }
-
-        // ===== ANTEATER TONGUE ANIMATION =====
-        function animateTongue(targetPosition) {
-            const tongue = document.getElementById('anteater-tongue');
-            const anteaterDiv = document.querySelector('.anteater-asset');
-            
-            // Get anteater position on screen
-            const anteaterRect = anteaterDiv.getBoundingClientRect();
-            const anteaterX = anteaterRect.left + 5; // mouth position
-            const anteaterY = anteaterRect.top + 45;
-
-            // Get marker position on screen
-            const scale = Math.pow(2, map.getZoom());
-            const projection = map.getProjection();
-            const bounds = map.getBounds();
-            
-            if (!projection || !bounds) return;
-
-            const topRight = projection.fromLatLngToPoint(bounds.getNorthEast());
-            const bottomLeft = projection.fromLatLngToPoint(bounds.getSouthWest());
-            const worldPoint = projection.fromLatLngToPoint(targetPosition);
-
-            const markerX = (worldPoint.x - bottomLeft.x) / (topRight.x - bottomLeft.x) * document.getElementById('map').offsetWidth;
-            const markerY = (worldPoint.y - topRight.y) / (bottomLeft.y - topRight.y) * document.getElementById('map').offsetHeight;
-
-            // Calculate relative position
-            const deltaX = markerX - anteaterX;
-            const deltaY = markerY - anteaterY;
-
-            // Create bezier curve path
-            const controlX1 = deltaX * 0.3;
-            const controlY1 = deltaY * 0.1;
-            const controlX2 = deltaX * 0.7;
-            const controlY2 = deltaY * 0.3;
-
-            // Limit tongue length for visual appeal
-            const maxLength = 300;
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-            const scale_factor = Math.min(1, maxLength / distance);
-
-            const path = `M 5 45 C ${5 + controlX1 * scale_factor} ${45 + controlY1 * scale_factor}, ${5 + controlX2 * scale_factor} ${45 + controlY2 * scale_factor}, ${5 + deltaX * scale_factor * 0.05} ${45 + deltaY * scale_factor * 0.05}`;
-            
-            tongue.setAttribute('d', path);
-        }
-
-        function resetTongue() {
-            const tongue = document.getElementById('anteater-tongue');
-            tongue.setAttribute('d', 'M 5 45 L 5 45');
         }
 
         // ===== FILTER MARKERS =====
