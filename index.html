@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find An Anteater</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.8em%22 font-size=%2280%22>A</text></svg>">
-    
     <style>
         * {
             margin: 0;
@@ -360,7 +358,7 @@
             }
         }
 
-        /* Mobile Responsiveness */
+        /* Mobile */
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.2rem;
@@ -474,7 +472,6 @@
         let currentFilter = 'all';
         let geocoder;
 
-        // ===== INITIALIZATION =====
         function initMap() {
             // Create geocoder
             geocoder = new google.maps.Geocoder();
@@ -523,7 +520,6 @@
             });
         }
 
-        // ===== ANT MARKER SVGs =====
         function createAntIcon(isRed) {
             const color = isRed ? '#cc2200' : '#1a1a1a';
             return {
@@ -537,7 +533,6 @@
             };
         }
 
-        // ===== CREATE MARKERS =====
         function createMarkers() {
             LOCATIONS.forEach(location => {
                 const marker = new google.maps.Marker({
@@ -574,7 +569,6 @@
             });
         }
 
-        // ===== SEARCH & GEOCODING =====
         function handleSearch() {
             const searchInput = document.getElementById('search-input').value.trim();
             const errorDiv = document.getElementById('error-message');
@@ -602,7 +596,6 @@
             });
         }
 
-        // ===== CALCULATE DISTANCE =====
         function calculateDistance(lat1, lng1, lat2, lng2) {
             const R = 3959; // Earth radius in miles
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -614,7 +607,6 @@
             return R * c;
         }
 
-        // ===== SHOW NEARBY RESULTS =====
         function showNearbyResults() {
             if (!userLocation) return;
 
@@ -662,7 +654,6 @@
             resultsPanel.classList.add('visible');
         }
 
-        // ===== SELECT MARKER =====
         function selectMarker(marker) {
             // Reset previous selection
             if (selectedMarker) {
@@ -683,7 +674,6 @@
             map.panTo(marker.getPosition());
         }
 
-        // ===== INFO PANEL =====
         function showInfoPanel(location) {
             const infoPanel = document.getElementById('info-panel');
             const infoContent = document.getElementById('info-content');
@@ -745,7 +735,6 @@
             document.getElementById('results-panel').classList.remove('visible');
         }
 
-        // ===== FILTER MARKERS =====
         function filterMarkers() {
             markers.forEach(marker => {
                 if (currentFilter === 'all' || marker.locationData.encounter) {
