@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐜 Find An Anteater</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐜</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --parchment: #f5ebe0;
+            --forest-green: #3d5a3d;
+            --warm-brown: #6b4423;
+            --text-dark: #4a3728;
+            --ant-red: #cc2200;
+            --ant-black: #1a1a1a;
+            --water: #a8c5b5;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: var(--parchment);
+            color: var(--text-dark);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Header & Search */
+        #header {
+            background-color: var(--parchment);
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: var(--warm-brown);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid var(--forest-green);
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: Georgia, serif;
+            background-color: #fff;
+        }
+
+        #search-button {
+            padding: 12px 30px;
+            background-color: var(--forest-green);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        #search-button:hover {
+            background-color: var(--warm-brown);
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--forest-green);
+            background-color: white;
+            color: var(--forest-green);
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--forest-green);
+            color: white;
+        }
+
+        .error-message {
+            text-align: center;
+            color: var(--ant-red);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Main Content */
+        #main-content {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Results Sidebar */
+        #results-panel {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 320px;
+            max-height: calc(100% - 40px);
+            background-color: rgba(245, 235, 224, 0.95);
+            border: 2px solid var(--forest-green);
+            border-radius: 12px;
+            padding: 20px;
+            padding-top: 50px;
+            overflow-y: auto;
+            transform: translateX(-400px);
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        #results-panel.visible {
+            transform: translateX(0);
+        }
+
+        #results-panel .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .result-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .result-item:hover {
+            border-color: var(--forest-green);
+            transform: translateX(5px);
+        }
+
+        .result-name {
+            font-weight: bold;
+            color: var(--warm-brown);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .result-distance {
+            color: var(--forest-green);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .result-location {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+
+        .encounter-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .encounter-badge.available {
+            background-color: #ffe0e0;
+            color: var(--ant-red);
+        }
+
+        .encounter-badge.viewing {
+            background-color: #e0e0e0;
+            color: #666;
+        }
+
+        /* Info Panel */
+        #info-panel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background-color: var(--parchment);
+            border-left: 3px solid var(--forest-green);
+            padding: 30px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 200;
+        }
+
+        #info-panel.visible {
+            transform: translateX(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--warm-brown);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            color: var(--warm-brown);
+            margin-bottom: 10px;
+        }
+
+        .info-section {
+            margin-bottom: 20px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: var(--forest-green);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            margin-bottom: 10px;
+        }
+
+        .species-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .species-list li:before {
+            content: "🐜 ";
+        }
+
+        .directions-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--forest-green);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .directions-btn:hover {
+            background-color: var(--warm-brown);
+        }
+
+        /* Anteater Character */
+        /* PLACEHOLDER: Replace with illustrated asset */
+        .anteater-asset {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 120px;
+            height: 80px;
+            z-index: 500;
+            pointer-events: none;
+        }
+
+        #anteater-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        #anteater-tongue {
+            transition: d 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Pulse Animation for Selected Marker */
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            #header {
+                padding: 15px;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            #results-panel {
+                left: 10px;
+                right: 10px;
+                width: auto;
+                max-height: 50%;
+                top: auto;
+                bottom: 10px;
+                transform: translateY(calc(100% + 20px));
+            }
+
+            #results-panel.visible {
+                transform: translateY(0);
+            }
+
+            #info-panel {
+                width: 100%;
+                height: 60%;
+                top: auto;
+                bottom: 0;
+                border-left: none;
+                border-top: 3px solid var(--forest-green);
+                transform: translateY(100%);
+            }
+
+            #info-panel.visible {
+                transform: translateY(0);
+            }
+
+            .anteater-asset {
+                width: 80px;
+                height: 55px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--parchment);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--forest-green);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <header id="header">
+            <h1>🐜 Find An Anteater</h1>
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="Enter your city or zip code..."
+                    autocomplete="off"
+                >
+                <button id="search-button">Search</button>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Locations</button>
+                <button class="filter-btn" data-filter="encounters">Encounters Only</button>
+            </div>
+            <div id="error-message" class="error-message"></div>
+        </header>
+
+        <div id="main-content">
+            <div id="map"></div>
+
+            <!-- Results Sidebar -->
+            <div id="results-panel">
+                <button class="close-btn" id="close-results">×</button>
+                <h3 style="margin-bottom: 15px; color: var(--warm-brown);">Nearby Locations</h3>
+                <div id="results-list"></div>
+            </div>
+
+            <!-- Info Panel -->
+            <div id="info-panel">
+                <button class="close-btn" id="close-info">×</button>
+                <div id="info-content"></div>
+            </div>
+        </div>
+
+        <!-- PLACEHOLDER: Anteater Character - Replace with illustrated asset -->
+        <div class="anteater-asset">
+            <svg id="anteater-svg" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+                <!-- Simple placeholder anteater -->
+                <!-- Body -->
+                <ellipse cx="70" cy="50" rx="35" ry="20" fill="#8B7355"/>
+                <!-- Head -->
+                <ellipse cx="30" cy="45" rx="20" ry="15" fill="#8B7355"/>
+                <!-- Snout -->
+                <path d="M 10 45 Q 5 45 5 45" stroke="#6B4423" stroke-width="4" fill="none" stroke-linecap="round"/>
+                <!-- Ear -->
+                <ellipse cx="38" cy="38" rx="8" ry="12" fill="#6B4423"/>
+                <!-- Legs -->
+                <rect x="50" y="65" width="6" height="12" fill="#6B4423" rx="2"/>
+                <rect x="65" y="65" width="6" height="12" fill="#6B4423" rx="2"/>
+                <rect x="80" y="65" width="6" height="12" fill="#6B4423" rx="2"/>
+                <rect x="95" y="65" width="6" height="12" fill="#6B4423" rx="2"/>
+                <!-- Tail -->
+                <path d="M 100 50 Q 110 45 115 40" stroke="#6B4423" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <!-- Tongue (animated element) -->
+                <path id="anteater-tongue" d="M 5 45 L 5 45" stroke="#E8989C" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Load location data from external file -->
+    <script src="locations.js"></script>
+
+    <script>
+
+        // ===== STATE =====
+        let map;
+        let markers = [];
+        let selectedMarker = null;
+        let userLocation = null;
+        let currentFilter = 'all';
+        let geocoder;
+
+        // ===== INITIALIZATION =====
+        function initMap() {
+            // Create geocoder
+            geocoder = new google.maps.Geocoder();
+
+            // Map styling - warm, naturalist field-map aesthetic
+            const mapStyles = [
+                { "elementType": "geometry", "stylers": [{ "color": "#f5ebe0" }] },
+                { "elementType": "labels.text.fill", "stylers": [{ "color": "#4a3728" }] },
+                { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#a8c5b5" }] },
+                { "featureType": "landscape.natural", "elementType": "geometry", "stylers": [{ "color": "#dde5c8" }] },
+                { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#c9b99a" }] },
+                { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#c5d9a0" }] },
+                { "featureType": "administrative", "elementType": "geometry.stroke", "stylers": [{ "color": "#8b7355" }, { "weight": 1 }] }
+            ];
+
+            // Initialize map centered on Americas
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 5, lng: -80 },
+                zoom: 3,
+                minZoom: 3,
+                maxZoom: 16,
+                styles: mapStyles,
+                mapTypeControl: false,
+                streetViewControl: false
+            });
+
+            // Create markers for all locations
+            createMarkers();
+
+            // Event listeners
+            document.getElementById('search-button').addEventListener('click', handleSearch);
+            document.getElementById('search-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSearch();
+            });
+            document.getElementById('close-info').addEventListener('click', closeInfoPanel);
+            document.getElementById('close-results').addEventListener('click', closeResultsPanel);
+
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    filterMarkers();
+                });
+            });
+        }
+
+        // ===== ANT MARKER SVGs =====
+        function createAntIcon(isRed) {
+            const color = isRed ? '#cc2200' : '#1a1a1a';
+            return {
+                path: 'M 16 8 C 16 10 14.5 11.5 12.5 11.5 C 10.5 11.5 9 10 9 8 C 9 6 10.5 4.5 12.5 4.5 C 14.5 4.5 16 6 16 8 Z M 9 12 C 9 14.5 7 16.5 4.5 16.5 C 2 16.5 0 14.5 0 12 C 0 9.5 2 7.5 4.5 7.5 C 7 7.5 9 9.5 9 12 Z M 25 12 C 25 14.5 23 16.5 20.5 16.5 C 18 16.5 16 14.5 16 12 C 16 9.5 18 7.5 20.5 7.5 C 23 7.5 25 9.5 25 12 Z M 4.5 20 L 2 24 M 4.5 20 L 7 24 M 20.5 20 L 18 24 M 20.5 20 L 23 24 M 9 17 L 7 21 M 16 17 L 18 21 M 12.5 2 L 12.5 0 M 15 3 L 17 1',
+                fillColor: color,
+                fillOpacity: 1,
+                strokeColor: color,
+                strokeWeight: 1.5,
+                scale: 1,
+                anchor: new google.maps.Point(12.5, 12)
+            };
+        }
+
+        // ===== CREATE MARKERS =====
+        function createMarkers() {
+            LOCATIONS.forEach(location => {
+                const marker = new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    icon: createAntIcon(location.encounter),
+                    title: location.name,
+                    animation: google.maps.Animation.DROP
+                });
+
+                marker.locationData = location;
+
+                marker.addListener('click', () => {
+                    selectMarker(marker);
+                });
+
+                // Hover effect
+                marker.addListener('mouseover', () => {
+                    if (marker !== selectedMarker) {
+                        marker.setIcon({
+                            ...createAntIcon(location.encounter),
+                            scale: 1.2
+                        });
+                    }
+                });
+
+                marker.addListener('mouseout', () => {
+                    if (marker !== selectedMarker) {
+                        marker.setIcon(createAntIcon(location.encounter));
+                    }
+                });
+
+                markers.push(marker);
+            });
+        }
+
+        // ===== SEARCH & GEOCODING =====
+        function handleSearch() {
+            const searchInput = document.getElementById('search-input').value.trim();
+            const errorDiv = document.getElementById('error-message');
+
+            if (!searchInput) {
+                errorDiv.textContent = '🐜 Please enter a city or zip code';
+                return;
+            }
+
+            errorDiv.textContent = '';
+
+            geocoder.geocode({ address: searchInput }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                    userLocation = results[0].geometry.location;
+                    
+                    // Pan and zoom to searched location
+                    map.setCenter(userLocation);
+                    map.setZoom(8);
+
+                    // Calculate distances and show results
+                    showNearbyResults();
+                } else {
+                    errorDiv.textContent = '🐜 Location not found. Please try again with a valid city or zip code.';
+                }
+            });
+        }
+
+        // ===== CALCULATE DISTANCE =====
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 3959; // Earth radius in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        // ===== SHOW NEARBY RESULTS =====
+        function showNearbyResults() {
+            if (!userLocation) return;
+
+            // Calculate distances
+            const locationsWithDistance = LOCATIONS.map(location => ({
+                ...location,
+                distance: calculateDistance(
+                    userLocation.lat(),
+                    userLocation.lng(),
+                    location.lat,
+                    location.lng
+                )
+            }));
+
+            // Sort by distance and take top 5
+            const nearest = locationsWithDistance
+                .filter(loc => currentFilter === 'all' || loc.encounter)
+                .sort((a, b) => a.distance - b.distance)
+                .slice(0, 5);
+
+            // Display results
+            const resultsPanel = document.getElementById('results-panel');
+            const resultsList = document.getElementById('results-list');
+            
+            resultsList.innerHTML = '';
+            
+            nearest.forEach(location => {
+                const div = document.createElement('div');
+                div.className = 'result-item';
+                div.innerHTML = `
+                    <div class="result-name">${location.name}</div>
+                    <div class="result-distance">${location.distance.toFixed(1)} miles away</div>
+                    <div class="result-location">${location.city}, ${location.state}</div>
+                    <span class="encounter-badge ${location.encounter ? 'available' : 'viewing'}">
+                        ${location.encounter ? '🐜 Encounter Available' : 'Viewing Only'}
+                    </span>
+                `;
+                
+                div.addEventListener('click', () => {
+                    const marker = markers.find(m => m.locationData.id === location.id);
+                    if (marker) selectMarker(marker);
+                });
+                
+                resultsList.appendChild(div);
+            });
+
+            resultsPanel.classList.add('visible');
+        }
+
+        // ===== SELECT MARKER =====
+        function selectMarker(marker) {
+            // Reset previous selection
+            if (selectedMarker) {
+                selectedMarker.setIcon(createAntIcon(selectedMarker.locationData.encounter));
+            }
+
+            // Set new selection
+            selectedMarker = marker;
+            marker.setIcon({
+                ...createAntIcon(marker.locationData.encounter),
+                scale: 1.3
+            });
+
+            // Show info panel
+            showInfoPanel(marker.locationData);
+
+            // Animate anteater tongue
+            animateTongue(marker.getPosition());
+
+            // Pan to marker
+            map.panTo(marker.getPosition());
+        }
+
+        // ===== INFO PANEL =====
+        function showInfoPanel(location) {
+            const infoPanel = document.getElementById('info-panel');
+            const infoContent = document.getElementById('info-content');
+
+            infoContent.innerHTML = `
+                <h2 class="info-title">${location.name}</h2>
+                
+                <div class="info-section">
+                    <div class="info-label">Location</div>
+                    <div class="info-value">${location.city}, ${location.state}, ${location.country}</div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-label">Species</div>
+                    <ul class="species-list">
+                        ${location.species.map(s => `<li>${s}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-label">Encounter Availability</div>
+                    <span class="encounter-badge ${location.encounter ? 'available' : 'viewing'}">
+                        ${location.encounter ? '🐜 Encounter Available' : 'Viewing Only'}
+                    </span>
+                </div>
+
+                ${location.notes ? `
+                    <div class="info-section">
+                        <div class="info-label">Notes</div>
+                        <div class="info-value">${location.notes}</div>
+                    </div>
+                ` : ''}
+
+                ${location.encounter_details ? `
+                    <div class="info-section">
+                        <div class="info-label">Encounter Details</div>
+                        <div class="info-value">${location.encounter_details}</div>
+                    </div>
+                ` : ''}
+
+                <div class="info-section">
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}" 
+                       target="_blank" 
+                       class="directions-btn">
+                        Get Directions
+                    </a>
+                    ${location.website ? `<br><a href="${location.website}" target="_blank" class="directions-btn" style="margin-top: 10px;">Visit Website</a>` : ''}
+                </div>
+            `;
+
+            infoPanel.classList.add('visible');
+        }
+
+        function closeInfoPanel() {
+            document.getElementById('info-panel').classList.remove('visible');
+            
+            if (selectedMarker) {
+                selectedMarker.setIcon(createAntIcon(selectedMarker.locationData.encounter));
+                selectedMarker = null;
+            }
+
+            // Reset tongue
+            resetTongue();
+        }
+
+        function closeResultsPanel() {
+            document.getElementById('results-panel').classList.remove('visible');
+        }
+
+        // ===== ANTEATER TONGUE ANIMATION =====
+        function animateTongue(targetPosition) {
+            const tongue = document.getElementById('anteater-tongue');
+            const anteaterDiv = document.querySelector('.anteater-asset');
+            
+            // Get anteater position on screen
+            const anteaterRect = anteaterDiv.getBoundingClientRect();
+            const anteaterX = anteaterRect.left + 5; // mouth position
+            const anteaterY = anteaterRect.top + 45;
+
+            // Get marker position on screen
+            const scale = Math.pow(2, map.getZoom());
+            const projection = map.getProjection();
+            const bounds = map.getBounds();
+            
+            if (!projection || !bounds) return;
+
+            const topRight = projection.fromLatLngToPoint(bounds.getNorthEast());
+            const bottomLeft = projection.fromLatLngToPoint(bounds.getSouthWest());
+            const worldPoint = projection.fromLatLngToPoint(targetPosition);
+
+            const markerX = (worldPoint.x - bottomLeft.x) / (topRight.x - bottomLeft.x) * document.getElementById('map').offsetWidth;
+            const markerY = (worldPoint.y - topRight.y) / (bottomLeft.y - topRight.y) * document.getElementById('map').offsetHeight;
+
+            // Calculate relative position
+            const deltaX = markerX - anteaterX;
+            const deltaY = markerY - anteaterY;
+
+            // Create bezier curve path
+            const controlX1 = deltaX * 0.3;
+            const controlY1 = deltaY * 0.1;
+            const controlX2 = deltaX * 0.7;
+            const controlY2 = deltaY * 0.3;
+
+            // Limit tongue length for visual appeal
+            const maxLength = 300;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const scale_factor = Math.min(1, maxLength / distance);
+
+            const path = `M 5 45 C ${5 + controlX1 * scale_factor} ${45 + controlY1 * scale_factor}, ${5 + controlX2 * scale_factor} ${45 + controlY2 * scale_factor}, ${5 + deltaX * scale_factor * 0.05} ${45 + deltaY * scale_factor * 0.05}`;
+            
+            tongue.setAttribute('d', path);
+        }
+
+        function resetTongue() {
+            const tongue = document.getElementById('anteater-tongue');
+            tongue.setAttribute('d', 'M 5 45 L 5 45');
+        }
+
+        // ===== FILTER MARKERS =====
+        function filterMarkers() {
+            markers.forEach(marker => {
+                if (currentFilter === 'all' || marker.locationData.encounter) {
+                    marker.setMap(map);
+                } else {
+                    marker.setMap(null);
+                }
+            });
+
+            // Update results if search was performed
+            if (userLocation) {
+                showNearbyResults();
+            }
+        }
+
+        // ===== LOAD GOOGLE MAPS API =====
+        window.initMap = initMap;
+    </script>
+
+    <!-- 
+    GOOGLE MAPS API KEY SETUP:
+    
+    1. Replace YOUR_API_KEY_HERE with your actual Google Maps API key
+    2. IMPORTANT: Restrict your API key in Google Cloud Console:
+       - HTTP referrer restrictions: Add your-username.github.io/* and localhost
+       - API restrictions: Enable ONLY Maps JavaScript API and Geocoding API
+    3. This is safe - API keys are meant to be visible in client-side code when properly restricted
+    
+    Required APIs: Maps JavaScript API, Geocoding API, (optional) Places API
+    -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW_1sh2o8lZzAMaESUpKP5sqaz-7fV0go&callback=initMap">
+    </script>
+</body>
+</html>
