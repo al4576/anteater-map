@@ -1574,7 +1574,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "0.1 Tammy, 2020",
     "encounter_details": ""
   },
   {
@@ -1609,7 +1609,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Aztec, September 13, 2004 (UNK x UNK)",
     "encounter_details": ""
   },
   {
@@ -1626,7 +1626,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Demo, September 4, 2019 (Mochila x Delilah)\n1.0 Bowie, December 21, 2016 (UNK x Laura)\n1.0 Arnaud, March 28, 2022 (Bowie x Demo)",
     "encounter_details": "Giant Anteater Tour: $25/person (3+). Tuesdays, Thursdays, Saturdays at 11:00 AM. 20-30 mins. Behind-the-scenes look at diet and adaptations. Unavailable Jan-March due to temps."
   },
   {
@@ -1643,7 +1643,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Mochilla, February 12, 2016 (E.O x Pana)",
     "encounter_details": ""
   },
   {
@@ -1660,7 +1660,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Archie",
     "encounter_details": ""
   },
   {
@@ -1677,7 +1677,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Guapo, August 8, 2019 (Caliente x Chive)",
     "encounter_details": ""
   },
   {
@@ -1694,7 +1694,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Carlito, November 6, 2014 (Ridley x Anara)",
     "encounter_details": ""
   },
   {
@@ -1711,7 +1711,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Arnaud, February 28, 2020 (Cezar x Praim)\n0.1 Chili, June 15, 2021 (E.O x Pana)\n1.0 Mr. Snoot, June 16, 2025 (Arnaud x Chili)",
     "encounter_details": ""
   },
   {
@@ -1728,7 +1728,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Mccauley, December 22, 2010 (Luke x Evita)\n0.1 Gloria, February 22, 2011 (Killroy x Stella ABR)",
     "encounter_details": ""
   },
   {
@@ -1745,7 +1745,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Jockamo, January 8, 2009 (UNK x Anita)",
     "encounter_details": ""
   },
   {
@@ -1762,7 +1762,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Pana, April 28, 2009 (Oscar x Tiana)\n1.0 E.O, April 11, 2009 (Cruz x Odelia)\n0.1 Kayapo, August, 27, 2024 (E.O x Pana)",
     "encounter_details": ""
   },
   {
@@ -1780,7 +1780,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n0.1 Tulum, June 28, 2012 (UNK x Adelhi)",
     "encounter_details": ""
   },
   {
@@ -1798,7 +1798,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n0.1 Maria, November 20, 2017 (Ridley x Anara)\n1.0 Tupi, July 30, 2018 (E.O x Pana)",
     "encounter_details": ""
   },
   {
@@ -1815,19 +1815,19 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Betsy, November 15, 2016 (Lupito x Tulum)",
     "encounter_details": "Wild Encounter: $150. Includes feeding yogurt and potentially touching their noses. 30 minutes. Limited availability."
   },
   {
     "id": "zoo-106",
     "name": "Chittenango (The Wild Animal Park)",
-    "address": "",
-    "city": "United States of America",
-    "state": "",
-    "country": "United States of America",
-    "lat": 0.0,
-    "lng": 0.0,
-    "website": "",
+    "address": "7621 Lakeport Rd, Chittenango, NY 13037, USA",
+    "city": "Chittenango",
+    "state": "NY",
+    "country": "United States",
+    "lat": 43.09270992941107, 
+    "lng": -75.87509038897092,
+    "website": "https://www.thewildpark.com/",
     "encounter": false,
     "species": [
       "Giant Anteater"
@@ -1849,7 +1849,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Kutter, July 2002 (Wild x Wild)",
     "encounter_details": ""
   },
   {
@@ -1866,7 +1866,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Gorda, February 2008 (Wild x Wild)\n1.0 Pequeno, April 2008 (Wild x Wild)\n0.0.1 Eclipse, October 14, 2023 (Pequeno x Gorda)\n0.1 Sumo, September 26, 2019 (Pequeno x Gorda)\n1.0 Forte, November, 2025 (Pequeno x Gorda)",
     "encounter_details": ""
   },
   {
@@ -1900,7 +1900,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Pickles, November 12, 2016 (Jo Hei x Corndog)",
     "encounter_details": ""
   },
   {
@@ -1917,7 +1917,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Avery, December 29, 2020 (McCauley x Gloria)\n0.1 Daphne\n0.1 Poppy, August 14, 2024 (Avery x Daphne)",
     "encounter_details": ""
   },
   {
@@ -1934,7 +1934,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Chili, February 20, 2022 (Caliente x Chive)",
     "encounter_details": ""
   },
   {
@@ -1951,7 +1951,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Amara, 2019\n1.0 Armando",
     "encounter_details": ""
   },
   {
@@ -1968,7 +1968,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Rio, September 3, 2016 (Pablo x Olive)",
     "encounter_details": ""
   },
   {
@@ -1985,7 +1985,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Hugo, April 6\n0.1 Helga, February 15, 2022",
     "encounter_details": ""
   },
   {
@@ -2002,7 +2002,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Demetrio\n0.1 Sabrina\n1.0 Swiper (UNK x Sabrina)",
     "encounter_details": ""
   },
   {
@@ -2019,7 +2019,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Fred, November 25, 2013 (Kutter x Pica)",
     "encounter_details": ""
   },
   {
@@ -2036,7 +2036,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Penny Ant-E, April 2003 (Wild x Wild)\n1.0 Jerry, January 1999 (Wild x Wild)",
     "encounter_details": ""
   },
   {
@@ -2053,7 +2053,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0? Barnaby\n1.0?Armstid",
     "encounter_details": ""
   },
   {
@@ -2070,7 +2070,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Pablo, December 7, 2010 (Dante x Maripi\n0.1 Olive, August 9, 2008 (Cyrano x Jatai)",
     "encounter_details": ""
   },
   {
@@ -2087,7 +2087,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Lupito, September 18, 2012 (Oscar x Amelia)\n0.1 Fern, October 9, 2017 (UNK x Sprout)",
     "encounter_details": ""
   },
   {
@@ -2104,7 +2104,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Annie, March 4, 2002 (UNK x Goblin)\n0.1 Cali, November 20, 2017 (Ridley x Anara)",
     "encounter_details": ""
   },
   {
@@ -2121,7 +2121,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Bumi, June 15, 2021 (UNK x UNK)",
     "encounter_details": "Giant Anteater Encounter: $150 per person. A private experience that includes entering the habitat area, learning about their specialized diet, and a feeding opportunity."
   },
   {
@@ -2138,7 +2138,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Wayne, March 30, 2016 (Luke x Evita)",
     "encounter_details": ""
   },
   {
@@ -2156,7 +2156,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n1.0 Sid, March 1, 2014 (Ridley x Anara)\n0.1 Inara, April 5, 2012 (Jo Hei x Corndog)",
     "encounter_details": ""
   },
   {
@@ -2173,7 +2173,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Asterix, December 15, 2018 (Lupito x Tulum)\n0.1 Maisy, January 6, 2019 (McCauley x Gloria)",
     "encounter_details": ""
   },
   {
@@ -2190,7 +2190,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Maya\n1.0 Miguel",
     "encounter_details": ""
   },
   {
@@ -2207,7 +2207,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Dante, July 2002 (Wild x Wild)\n1.0 Camilo, May 13, 2006 (Freedom x UNK)",
     "encounter_details": ""
   },
   {
@@ -2225,7 +2225,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n1.0 Leonard(Sabia), August 14, 2012 (Willie x Wendy)",
     "encounter_details": ""
   },
   {
@@ -2242,7 +2242,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Angelica, September 9, 2003 (Cyrano x Jatai)\n1.0 Caliente, October 20, 2007 (Kane x Lucy)",
     "encounter_details": ""
   },
   {
@@ -2277,7 +2277,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n1.0 Ziggy Ebenezer, December 8, 2020 (Pico x Laura)",
     "encounter_details": ""
   },
   {
@@ -2294,7 +2294,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Barques, November 12, 2007 (Zachary x Anita)\n0.1 Zoe, July 24, 2008 (UNK x Amber)",
     "encounter_details": ""
   },
   {
@@ -2328,7 +2328,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Xander, January 8, 2013 (Frankie x Ellie Mae)",
     "encounter_details": "Wild Encounter: $100+ per person. Guests go behind the scenes to learn about conservation and assist in feeding Dee Gee (yogurt/special diet). Participants must be 5+."
   },
   {
@@ -2345,7 +2345,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Tiana, August 2002 (Wild x Wild)\n0.1 Praim, July 2003 (Wild x Wild)\n0.1 Consuela, May 11, 2008 (Cezar x Amelia)\n1.0 Ridley, October 10, 2007 (Alberto x Mira)\n0.1 Dulce, May 26, 2011 (Oscar x Consuela)\n0.1 Isabella, October 22, 2017 (Cezar x Praim)\n0.1 Noel, December 25, 2017 (Carib x Consuela)\n1.0 Estaban, October 20, 2021 (Carib x Dulce)",
     "encounter_details": ""
   },
   {
@@ -2379,7 +2379,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Anton, July 25, 2014 (Jo Hei x Corndog)",
     "encounter_details": ""
   },
   {
@@ -2396,7 +2396,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Velcro, March 18, 1998 (Elmo x Ellie Mae)\n0.1 Honey, May 16, 2013 (Killroy x Stella ABR)\n0.1 Tapas, May 18, 2015 (Lupito x Tulum)",
     "encounter_details": ""
   },
   {
@@ -2413,7 +2413,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Annie, September 29, 2004 (UNK x Goblin)",
     "encounter_details": ""
   },
   {
@@ -2431,7 +2431,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n1.0 Beaker, October 27, 2008 (Rocky x Sabina)",
     "encounter_details": ""
   },
   {
@@ -2448,7 +2448,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Kaboom, July 17, 2013 (Oranjeboom x Praim)",
     "encounter_details": ""
   },
   {
@@ -2466,7 +2466,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "1.0 Mochila, April 25, 2011 (Oranjeboom x Tiana)\n0.1 Delilah, September 28, 2012 (Cruz x Odelia)",
     "encounter_details": ""
   },
   {
@@ -2483,7 +2483,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Bissell, January 26, 2008 (Bob/Hoover x Punkin)\n0.1 Mojo, November 12, 2005 (Rocky x Sabina)",
     "encounter_details": ""
   },
   {
@@ -2500,7 +2500,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Pumpkin, November 26, 2019 (Peter x Basil)\n0.1 Ruth, November 24, 2020 (Mochila x Delilah)",
     "encounter_details": ""
   },
   {
@@ -2518,7 +2518,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua (Nominate subspecies)"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n0.1 Sprout, April 28, 2011 (Peter x Basil)\n1.0 Demetrio, April 7, 2016 (Carib x Dulce)",
     "encounter_details": ""
   },
   {
@@ -2536,7 +2536,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n0.1 Laura Garcia, December 8, 2013 (Mike x Gloria)\n1.0 Orion, January 5, 2015 (Carib x Ricky)",
     "encounter_details": ""
   },
   {
@@ -2553,7 +2553,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Luke, October 26, 1998 (UNK x Angelita)\n0.1 Evita, February 22, 2009 (Kane x Lucy)",
     "encounter_details": ""
   },
   {
@@ -2570,7 +2570,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Xander, July 11, 2007 (Rocky x Sabina)\n0.1 Xena, November 15, 2004 (Frankie x Ellie Mae)",
     "encounter_details": ""
   },
   {
@@ -2587,7 +2587,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Peter, June 2003 (Wild x Wild)\n0.1 Basil, June 2003 (Wild x Wild)",
     "encounter_details": ""
   },
   {
@@ -2605,7 +2605,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n0.1 Corndog, January 6, 2006 (UNK x Amber)\n1.0 Jo Hei, May 4, 2006 (UNK x UNK)",
     "encounter_details": "Anteater Encounter: $75 per person. Includes a behind-the-scenes look at their habitat and a chance to provide enrichment. Seasonal availability (typically May-Sept)."
   },
   {
@@ -2622,7 +2622,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Wendy, March 11, 1997 (Ebenezer x Jezebel)",
     "encounter_details": ""
   },
   {
@@ -2639,7 +2639,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "0.1 Velma\n0.1 Daphne",
     "encounter_details": ""
   },
   {
@@ -2656,7 +2656,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Fernando, September 14, 2022 (Lupito x Fern)",
     "encounter_details": ""
   },
   {
@@ -2674,7 +2674,7 @@ const LOCATIONS = [
       "Giant Anteater",
       "Southern Tamandua"
     ],
-    "notes": "",
+    "notes": "Giant Anteater\n1.0 Nico, January 29, 2002 (Alberto x Carla)\n0.1 Zola, September 27, 2012 (Zander x Zoe)",
     "encounter_details": "Behind-the-Scenes Tour: $95+. Can be customized to focus on the South American animals including the anteaters, depending on animal health and staff availability."
   },
   {
@@ -2691,7 +2691,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Frankie, August 25, 1998 (Osito x Chesley)",
     "encounter_details": ""
   },
   {
@@ -2708,7 +2708,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Cruz, July 2000 (Wild x Wild)\n0.1 Odelia, July 2000 (Wild x Wild)",
     "encounter_details": ""
   },
   {
@@ -2725,7 +2725,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Mateo, April 28, 2004 (Cruz x Odelia)\n0.1 Chive, October 16, 2012 (Peter x Basil)",
     "encounter_details": ""
   },
   {
@@ -2742,7 +2742,7 @@ const LOCATIONS = [
     "species": [
       "Giant Anteater"
     ],
-    "notes": "",
+    "notes": "1.0 Douglas(Doug)\n0.1 Quinn (technically Eden Zoo)",
     "encounter_details": ""
   },
   {
@@ -5324,5 +5324,22 @@ const LOCATIONS = [
     ],
     "notes": "",
     "encounter_details": ""
-  }
+  },
+  {
+    "id": "zoo-310",
+    "name": "Brandywine Zoo",
+    "address": "1001 N Park Dr, Wilmington, DE 19802, USA",
+    "city": "Wilmington",
+    "state": "DE",
+    "country": "USA",
+    "lat": 39.739235,
+    "lng": -75.579514,
+    "website": "https://brandywinezoo.org/",
+    "encounter": true,
+    "species": [
+      "Giant Anteater"
+    ],
+    "notes": "1.0 Lancaster, May 29, 2022 (Asterix x Maisy) born at the Lincoln Children's Zoo",
+    "encounter_details": "Feed and interact with our Giant Anteater while learning about their natural history, behavior, and conservation efforts. $50 for the 30 minute encounter, capacity for the encounter is 4."
+  },
 ];
