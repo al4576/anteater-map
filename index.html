@@ -140,6 +140,30 @@
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.55);
         }
 
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 6px 14px;
+            border: 1px solid var(--border-subtle);
+            background-color: rgba(18, 18, 18, 0.95);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #262626;
+            border-color: #3e3e3e;
+        }
+
         /* Main Content */
         #main-content {
             position: relative;
@@ -346,6 +370,120 @@
             background-color: #282828;
         }
 
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            width: min(700px, 100%);
+            max-height: calc(100vh - 32px);
+            overflow-y: auto;
+            background: #151515;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            background: #232323;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .modal-subtext {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #343434;
+            border-radius: 8px;
+            background: #111111;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.92rem;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-help {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .submit-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .status-message {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: #b9ffb9;
+        }
+
+        .status-message.error {
+            color: #ffadad;
+        }
+
         /* Pulse Animation for Selected Marker */
         @keyframes pulse-ring {
             0% {
@@ -435,6 +573,10 @@
                 <button class="filter-btn active" data-filter="all">All Locations</button>
                 <button class="filter-btn" data-filter="encounters">Encounters Only</button>
             </div>
+            <div class="action-buttons">
+                <button class="action-btn" id="open-submit-modal">Submit Update</button>
+                <button class="action-btn" id="open-about-modal">About</button>
+            </div>
             <div id="error-message" class="error-message"></div>
         </header>
 
@@ -459,6 +601,127 @@
 
     </div>
 
+    <div id="submit-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="submit-modal-title">
+            <button class="modal-close" id="close-submit-modal" aria-label="Close submit form">×</button>
+            <h2 class="modal-title" id="submit-modal-title">Submit an Update</h2>
+            <p class="modal-subtext">Submissions never auto-update the map. All submissions go through manual review before anything is changed.</p>
+            <form id="submission-form" class="form-grid">
+                <div>
+                    <label class="form-label" for="reporter-name">Your name (optional)</label>
+                    <input class="form-input" id="reporter-name" type="text" maxlength="120">
+                </div>
+
+                <div>
+                    <label class="form-label" for="reporter-email">Your email (optional)</label>
+                    <input class="form-input" id="reporter-email" type="email" maxlength="160" placeholder="name@example.com">
+                </div>
+
+                <div>
+                    <label class="form-label" for="submission-type">What is this submission about?</label>
+                    <select class="form-select" id="submission-type" required>
+                        <option value="place-update">Update about a specific place</option>
+                        <option value="general-note">General note or feedback</option>
+                    </select>
+                </div>
+
+                <!-- Place update fields -->
+                <div id="place-update-wrap">
+                    <div style="margin-bottom: 10px;">
+                        <label class="form-label" for="place-status">Is this an existing place or a new one?</label>
+                        <select class="form-select" id="place-status">
+                            <option value="existing">Existing place</option>
+                            <option value="new">New place</option>
+                        </select>
+                    </div>
+
+                    <div id="existing-place-wrap">
+                        <label class="form-label" for="existing-place">Existing place (autocomplete)</label>
+                        <input class="form-input" id="existing-place" type="text" list="known-places-list" placeholder="Start typing a location name...">
+                        <datalist id="known-places-list"></datalist>
+                    </div>
+
+                    <div id="new-place-wrap" class="hidden">
+                        <label class="form-label" for="new-place-name">New place name</label>
+                        <input class="form-input" id="new-place-name" type="text" placeholder="Example Zoo">
+                        <label class="form-label" for="new-place-location" style="margin-top: 8px;">New place city/country</label>
+                        <input class="form-input" id="new-place-location" type="text" placeholder="City, State/Region, Country">
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        <label class="form-label" for="encounter-update">Encounter update?</label>
+                        <select class="form-select" id="encounter-update">
+                            <option value="no-change">No change to encounter status</option>
+                            <option value="yes">Yes — this place has encounters</option>
+                            <option value="no">No — this place no longer has encounters</option>
+                            <option value="unknown">Not sure</option>
+                        </select>
+                    </div>
+
+                    <div id="encounter-details-wrap" class="hidden" style="margin-top: 10px;">
+                        <label class="form-label" for="encounter-details">Encounter details (pricing, timing, booking, etc.)</label>
+                        <textarea class="form-textarea" id="encounter-details" placeholder="e.g. $25/person, available Saturdays 10am–2pm, must book online..."></textarea>
+                    </div>
+
+                    <div id="update-field-wrap" style="margin-top: 10px;">
+                        <label class="form-label" for="update-field">What field should update?</label>
+                        <select class="form-select" id="update-field">
+                            <option value="notes">Notes</option>
+                            <option value="species">Species list</option>
+                            <option value="website">Website link</option>
+                            <option value="address">Address / location details</option>
+                            <option value="name">Location name</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        <label class="form-label" for="update-details">What should be changed?</label>
+                        <textarea class="form-textarea" id="update-details" placeholder="Describe the update in detail..."></textarea>
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        <label class="form-label" for="source-link">Source link (optional)</label>
+                        <input class="form-input" id="source-link" type="url" placeholder="https://example.com">
+                    </div>
+                </div>
+
+                <!-- General note / feedback fields -->
+                <div id="general-note-wrap" class="hidden">
+                    <label class="form-label" for="general-note-text">Your note or feedback</label>
+                    <textarea class="form-textarea" id="general-note-text" placeholder="Share your thoughts, suggestions, or anything else..."></textarea>
+                    <div style="margin-top: 10px;">
+                        <label class="form-label" for="source-link-general">Source link (optional)</label>
+                        <input class="form-input" id="source-link-general" type="url" placeholder="https://example.com">
+                    </div>
+                </div>
+
+                <div class="submit-row">
+                    <button type="submit" class="action-btn" id="submit-update-btn">Submit</button>
+                    <button type="button" id="reset-submission-form" class="action-btn">Reset</button>
+                </div>
+
+                <div id="submission-status" class="status-message hidden"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="about-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="about-modal-title">
+            <button class="modal-close" id="close-about-modal" aria-label="Close about section">×</button>
+            <h2 class="modal-title" id="about-modal-title">About Find An Anteater</h2>
+            <p class="modal-subtext">This map helps people find places to see anteaters around the world. All submissions go through manual review before anything on the map is changed.</p>
+
+            <h3 style="color: var(--accent); font-size: 0.95rem; margin: 16px 0 8px; font-weight: 600;">Submission Guidelines</h3>
+            <p class="modal-subtext"><strong style="color: var(--text-primary);">Notes</strong> — Great for individual anteater names, fun facts, and where to find them within the park.</p>
+            <p class="modal-subtext"><strong style="color: var(--text-primary);">Encounters</strong> — Only listed if you can directly feed or pet the anteater. Shows and appearances do not count.</p>
+            <p class="modal-subtext"><strong style="color: var(--text-primary);">Encounter Details</strong> — Pricing, scheduling, booking info, age limits, and other practical details.</p>
+
+            <p class="modal-subtext" style="margin-top: 14px;">We're also looking to update the ant icon on the map — if you have ideas or design skills, get in touch!</p>
+            <p class="modal-subtext">Feedback of any kind is always welcome.</p>
+        </div>
+    </div>
+
     <!-- Load location data from external file -->
     <script src="locations.js"></script>
 
@@ -471,6 +734,7 @@
         let userLocation = null;
         let currentFilter = 'all';
         let geocoder;
+        const WEB3FORMS_KEY = '2fc00706-8ce7-4b22-9bd6-26658517d102';
 
         function initMap() {
             // Create geocoder
@@ -508,6 +772,21 @@
             });
             document.getElementById('close-info').addEventListener('click', closeInfoPanel);
             document.getElementById('close-results').addEventListener('click', closeResultsPanel);
+            document.getElementById('open-submit-modal').addEventListener('click', () => openModal('submit-modal'));
+            document.getElementById('open-about-modal').addEventListener('click', () => openModal('about-modal'));
+            document.getElementById('close-submit-modal').addEventListener('click', () => closeModal('submit-modal'));
+            document.getElementById('close-about-modal').addEventListener('click', () => closeModal('about-modal'));
+            document.getElementById('submission-form').addEventListener('submit', handleSubmission);
+            document.getElementById('reset-submission-form').addEventListener('click', resetSubmissionForm);
+            document.getElementById('submission-type').addEventListener('change', updateSubmissionTypeUI);
+            document.getElementById('place-status').addEventListener('change', updatePlaceModeUI);
+            document.getElementById('encounter-update').addEventListener('change', updateEncounterDetailsUI);
+
+            document.querySelectorAll('.modal-overlay').forEach(modal => {
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) modal.classList.remove('visible');
+                });
+            });
 
             // Filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -518,6 +797,11 @@
                     filterMarkers();
                 });
             });
+
+            populateKnownPlaces();
+            updateSubmissionTypeUI();
+            updatePlaceModeUI();
+            updateEncounterDetailsUI();
         }
 
         function createAntIcon(isRed) {
@@ -747,6 +1031,155 @@
             // Update results if search was performed
             if (userLocation) {
                 showNearbyResults();
+            }
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('visible');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('visible');
+        }
+
+        function populateKnownPlaces() {
+            const list = document.getElementById('known-places-list');
+            list.innerHTML = '';
+            LOCATIONS.forEach(location => {
+                const option = document.createElement('option');
+                option.value = `${location.name} (${location.city}, ${location.country})`;
+                list.appendChild(option);
+            });
+        }
+
+        function updateSubmissionTypeUI() {
+            const type = document.getElementById('submission-type').value;
+            document.getElementById('place-update-wrap').classList.toggle('hidden', type !== 'place-update');
+            document.getElementById('general-note-wrap').classList.toggle('hidden', type !== 'general-note');
+        }
+
+        function updatePlaceModeUI() {
+            const mode = document.getElementById('place-status').value;
+            document.getElementById('existing-place-wrap').classList.toggle('hidden', mode !== 'existing');
+            document.getElementById('new-place-wrap').classList.toggle('hidden', mode !== 'new');
+        }
+
+        function updateEncounterDetailsUI() {
+            const encounterMode = document.getElementById('encounter-update').value;
+            const shouldShowDetails = encounterMode === 'yes';
+
+            document.getElementById('encounter-details-wrap').classList.toggle('hidden', !shouldShowDetails);
+            if (!shouldShowDetails) {
+                document.getElementById('encounter-details').value = '';
+            }
+            document.getElementById('update-field-wrap').classList.toggle('hidden', shouldShowDetails);
+        }
+
+        async function handleSubmission(event) {
+            event.preventDefault();
+
+            const submissionType = document.getElementById('submission-type').value;
+            const submitBtn = document.getElementById('submit-update-btn');
+            const statusEl = document.getElementById('submission-status');
+
+            const base = {
+                submitted_at: new Date().toISOString(),
+                submission_type: submissionType,
+                reporter_name: document.getElementById('reporter-name').value.trim(),
+                reporter_email: document.getElementById('reporter-email').value.trim()
+            };
+
+            let payload;
+
+            if (submissionType === 'general-note') {
+                const noteText = document.getElementById('general-note-text').value.trim();
+                if (!noteText) {
+                    alert('Please enter your note or feedback.');
+                    return;
+                }
+                payload = {
+                    ...base,
+                    note: noteText,
+                    source_link: document.getElementById('source-link-general').value.trim()
+                };
+            } else {
+                const placeStatus = document.getElementById('place-status').value;
+                const existingPlace = document.getElementById('existing-place').value.trim();
+                const newPlaceName = document.getElementById('new-place-name').value.trim();
+                const newPlaceLocation = document.getElementById('new-place-location').value.trim();
+                const encounterUpdate = document.getElementById('encounter-update').value;
+                const encounterDetails = document.getElementById('encounter-details').value.trim();
+                const updateDetails = document.getElementById('update-details').value.trim();
+
+                if (placeStatus === 'existing' && !existingPlace) {
+                    alert('Please choose an existing place.');
+                    return;
+                }
+                if (placeStatus === 'new' && !newPlaceName) {
+                    alert('Please enter a new place name.');
+                    return;
+                }
+                if (encounterUpdate === 'yes' && !encounterDetails) {
+                    alert('Please add encounter details.');
+                    return;
+                }
+                if (!updateDetails && encounterUpdate !== 'yes') {
+                    alert('Please describe what should be changed.');
+                    return;
+                }
+
+                payload = {
+                    ...base,
+                    place_status: placeStatus,
+                    existing_place: existingPlace,
+                    new_place_name: newPlaceName,
+                    new_place_location: newPlaceLocation,
+                    encounter_update: encounterUpdate,
+                    encounter_details: encounterDetails,
+                    update_field: encounterUpdate === 'yes' ? '' : document.getElementById('update-field').value,
+                    update_details: updateDetails,
+                    source_link: document.getElementById('source-link').value.trim()
+                };
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            statusEl.classList.add('hidden');
+            statusEl.classList.remove('error');
+
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ access_key: WEB3FORMS_KEY, subject: 'Find An Anteater – Submission', ...payload })
+                });
+
+                statusEl.classList.remove('hidden');
+                if (response.ok) {
+                    statusEl.textContent = 'Submitted! Thanks for the update.';
+                    resetSubmissionForm(false);
+                } else {
+                    const data = await response.json().catch(() => ({}));
+                    statusEl.classList.add('error');
+                    statusEl.textContent = data.error || 'Submission failed. Please try again.';
+                }
+            } catch (err) {
+                statusEl.classList.remove('hidden');
+                statusEl.classList.add('error');
+                statusEl.textContent = 'Network error. Please check your connection and try again.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit';
+            }
+        }
+
+        function resetSubmissionForm(clearStatus = true) {
+            document.getElementById('submission-form').reset();
+            updateSubmissionTypeUI();
+            updatePlaceModeUI();
+            updateEncounterDetailsUI();
+            if (clearStatus) {
+                document.getElementById('submission-status').classList.add('hidden');
             }
         }
 
